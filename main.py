@@ -1,4 +1,5 @@
 import math
+import numpy as np
 import bpy
 
 radii= {'H' : 0.32, 'He' : 0.46, 'Li': 1.33, 'Be' : 1.02, 'B' : 0.85, 
@@ -20,8 +21,8 @@ radii= {'H' : 0.32, 'He' : 0.46, 'Li': 1.33, 'Be' : 1.02, 'B' : 0.85,
 'Cm' : 1.66}
 
 #TODO: Värvid lõpp
-colours = {'H' : 0.32, 'He' : 0.46, 'Li': 1.33, 'Be' : 1.02, 'B' : 0.85, 
-'C' : 0.75, 'N' : 0.71, 'O' : 0.63, 'F'	: 0.64, 'Ne' : 0.67, 'Na' : 1.55, 
+colours = {'H' : "#ffffff", 'He' : 0.46, 'Li': 1.33, 'Be' : 1.02, 'B' : 0.85, 
+'C' :"#909090", 'N' : 0.71, 'O' : "#ff0d0d", 'F'	: 0.64, 'Ne' : 0.67, 'Na' : 1.55, 
 'Mg' : 1.39, 'Al' : 1.26, 'Si' : 1.16, 'P' : 1.11, 'S' : 1.03, 'Cl' : 0.99, 
 'Ar' : 0.96 , 'K' : 1.96, 'Ca' : 1.71, 'Sc': 1.48, 'Ti' : 1.36, 'V' : 1.34, 
 'Cr': 1.22,'Mn' : 1.19, 'Fe' : 1.16, 'Co' : 1.11, 'Ni' : 1.10,'Cu' : 1.12,
@@ -72,7 +73,7 @@ def read_atoms(file_path):
     file = open(file_path,  'r')
     for line in file:
         line = line.strip()
-        atoms.append(line)
+        atoms.append(line.split())
     file.close()
     
     # Eemaldab headeri 2 rida.
@@ -103,73 +104,89 @@ def find_bonds(atoms):
 
     return bonds
 
-def create_molecule(file_path):
-    """_summary_
+def create_molecule(file_path, atom_radius = 0.8, bond_radius = 0.1):
+    """ Joonistab Blenderis .xyz faili molekuli.
 
     Args:
-        file_path (_type_): _description_
+        file_path string: .xyz faili asukoht arvutis
+        atom_radius (float, optional): Aatomite raadiuste koefitsent. Defaults to 0.8.
+        bond_radius (float, optional): Molekuli sidemete raadiuste koefitsent. Defaults to 0.1.
     """
-
-    pass
-"""
-# Loeb argumendid sisse
-parser = argparse.ArgumentParser(description='')
-parser.add_argument('xyz', type=str, help='.xyz fail mida visualiseerida.')
-parser.add_argument('--width', type=str, help='Molekulide laius')
-parser.add_argument('--bond', type=str, help='Sidemete laius')
-args = parser.parse_args()
-
-# Loeb molekuli andmed sisse
-atoms = read_atoms(args.xyz)
-"""
-
-atoms = [['C',  35.884,  30.895, 49.120],
-         ['C',  36.177,  29.853, 50.124],
-         ['C',  37.296,  30.296, 51.074],
-         ['C',  38.553,  30.400, 50.259],
-         ['C',  38.357,  31.290, 49.044],
-         ['C',  39.559,  31.209, 48.082],
-         ['O',  34.968,  30.340, 48.234],
-         ['O',  34.923,  29.775, 50.910],
-         ['O',  37.441,  29.265, 52.113],
-         ['O',  39.572,  30.954, 51.086],
-         ['O',  37.155,  30.858, 48.364],
-         ['O',  39.261,  32.018, 46.920]]
-         
-# Leiab massikeskme koordinaadid
-x, y, z = 0, 0, 0
-molecule_mass = 0
-for i in range(len(atoms)):
-    molecule_mass += masses[atoms[i][0]]
-    x += masses[atoms[i][0]] * atoms[i][1]
-    y += masses[atoms[i][0]] * atoms[i][2]
-    z += masses[atoms[i][0]] * atoms[i][3]
+    atoms = read_atoms(file_path)
     
-x = x / molecule_mass
-y = y / molecule_mass
-z = z / molecule_mass
+    # Leiab massikeskme koordinaadid
+    x, y, z = 0, 0, 0
+    molecule_mass = 0
+    for i in range(len(atoms)):
+        molecule_mass += masses[atoms[i][0]]
+        x += masses[atoms[i][0]] * atoms[i][1]
+        y += masses[atoms[i][0]] * atoms[i][2]
+        z += masses[atoms[i][0]] * atoms[i][3]
+        
+    x = x / molecule_mass
+    y = y / molecule_mass
+    z = z / molecule_mass
 
-# Nihutab massikeskme 0, 0, 0
-for i in range(len(atoms)):
-    atoms[i][1] = atoms[i][1] - x
-    atoms[i][2] = atoms[i][2] - y
-    atoms[i][3] = atoms[i][3] - z
+    # Nihutab massikeskme 0, 0, 0
+    for i in range(len(atoms)):
+        atoms[i][1] = atoms[i][1] - x
+        atoms[i][2] = atoms[i][2] - y
+        atoms[i][3] = atoms[i][3] - z
 
-
-# Sidemed
-bonds = find_bonds(atoms)
-print("Found {} bonds.".format(len(bonds)))
-
-#TODO: Grupeeri objekte
-#TODO: Aatomid paremaks
-for atom in atoms:
-    print(atom)
-    bpy.ops.mesh.primitive_ico_sphere_add(subdivisions=4, radius=radii[atom[0]], calc_uvs=True, 
-    enter_editmode=False, align='WORLD', location=(atom[1], atom[2], atom[3]), rotation=(0.0, 0.0, 0.0))
+    # Sidemete leidmine
+    bonds = find_bonds(atoms)
+    print("Found {} bonds.".format(len(bonds)))    
     
-#TODO: Sidemed visualiseerida
-for bond in bonds:
-    print(bond)
-    bpy.ops.mesh.primitive_cylinder_add(vertices=32, radius=1.0, depth=2.0, end_fill_type='NGON', 
-    calc_uvs=True, enter_editmode=False, align='WORLD', location=(0.0, 0.0, 0.0), rotation=(0.0, 0.0, 0.0), 
-    scale=(0.0, 0.0, 0.0))
+    # Värvide loomine
+    atom_types = set([atom[0] for atom in atoms])
+    materials = dict()
+
+    for atom_type in atom_types:
+        mat = bpy.data.materials.new(atom_type)
+        color_hex = colours[atom_type].lstrip('#')
+        rgb_color = list(int(color_hex[i:i + len(color_hex) // 3], 16) for i in range(0, len(color_hex), len(color_hex) // 3)) + [255] 
+        mat.diffuse_color = tuple(np.array(rgb_color) / 255)
+        materials[atom_type] = mat
+        
+    
+    # Aatomite joonistamine
+    for atom in atoms:
+        print(atom)
+        obj = bpy.ops.mesh.primitive_ico_sphere_add(subdivisions=6, radius=atom_radius * radii[atom[0]], calc_uvs=True, 
+        enter_editmode=False, align='WORLD', location=(atom[1], atom[2], atom[3]), rotation=(0.0, 0.0, 0.0))
+        
+        activeObject = bpy.context.active_object 
+        activeObject.active_material = materials[atom[0]]
+        
+
+    # Sidemete joonistamine
+    for bond in bonds:
+        print(bond)
+        #Eeskujuks võetud: https://www.renderosity.com/forums/threads/2882775
+        end_point1 = np.array([bond[2][1], bond[2][2], bond[2][3]])
+        end_point2 = np.array([bond[3][1], bond[3][2], bond[3][3]])
+        center = end_point1 + 0.5 * (end_point2 - end_point1)
+        
+        normed_point = end_point2 - center
+        r = np.linalg.norm(normed_point)
+        theta = math.acos(normed_point[2]/r)
+        phi = math.atan2(normed_point[1], normed_point[0])
+        
+        bpy.ops.mesh.primitive_cylinder_add(vertices=32, radius=bond_radius, depth=bond[1], end_fill_type='NGON', 
+        calc_uvs=True, enter_editmode=False, align='WORLD', location=center, rotation=(0, theta, phi))
+
+
+def clear_collection():
+    """Kustutab kõik objektid ja mateeriad blenderi töölaual.
+    """   
+    bpy.ops.object.select_all(action='SELECT')
+    bpy.ops.object.delete()
+    
+    m = bpy.data.materials.get('Material')
+    for m in bpy.data.materials:
+        bpy.data.materials.remove(m)
+
+
+# Testimine
+#clear_collection()
+#create_molecule("C:\\Users\\Marko\\Desktop\\BlendProj\\blender-molecular-visualizations\\Molecules\\C6O6.xyz")
