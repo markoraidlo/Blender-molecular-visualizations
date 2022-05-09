@@ -1,7 +1,4 @@
-# blender-molecular-visualizations
-Blender molecular visualizations
-
-
+# Blender molecular visualizations
 
 ## Blender paketi lisamine
 
@@ -12,6 +9,14 @@ Edit -> Preferences -> Add-ons -> Install
 Vali vismol.py fail.
 
 (Võib olla töötab ka .zip faili installimine)
+
+## Paketi eemaldamine Windows arvutil
+
+Minna kausta
+
+C:\Users\User_name\AppData\Roaming\Blender Foundation\Blender\3.1\scripts
+
+ja kustutada fail vismol.py.
 
 ## Faili kasutamine:
 
@@ -28,16 +33,3 @@ Lisaks on võimalik kasutada argumente atom_radius ja bond_radius, mis on defaul
 Lisaks on võimalik kustutada molekuli käsuga
 
 'vismol.clear_collection()'
-
-
-Eemaldamine:
-
-Tuleb kustutada installitud blender pakett arvutist. Windowsi asukoht:
-
-C:\Users\User\AppData\Roaming\Blender Foundation\Blender\3.1\scripts\addons\main.py
-
-
-DNA kogu aeg - 116 s
-
-
-
