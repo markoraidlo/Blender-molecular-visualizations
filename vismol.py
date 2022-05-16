@@ -47,11 +47,13 @@ def read_atoms(file_path):
         file = open(file_path,  'r')
     except:
         raise FileNotFoundError("File {} not found!".format(file_path))
-        
-    for line in file:
-        line = line.strip()
-        if line != '':
-            atoms.append(line.split())
+    
+    N = int(file.readline())
+    file.readline()
+     
+    for i in range(N):
+        atoms.append(file.readline().strip().split())
+
     file.close()
     
     # Eemaldab headeri 2 rida.
@@ -77,7 +79,7 @@ def find_bonds(atoms):
                             + (atoms[i][2] - atoms[j][2])**2 
                             + (atoms[i][3] - atoms[j][3])**2)
 
-            if (atom_info[atoms[i][0]][0] + atom_info[atoms[j][0]][0]) * 1.1 > distance:
+            if (atom_info[atoms[i][0]][0] + atom_info[atoms[j][0]][0]) * 1.3 > distance:
                 bonds.append([atoms[i][0]+atoms[j][0], distance, atoms[i], atoms[j]])
 
     return bonds
@@ -224,6 +226,47 @@ def add_bond(atom_1, atom_2, bond_radius = 0.1):
     bpy.data.collections['Bonds'].objects.link(obj)
     
     print("Bond added.")
+    
+def read_cube(file_path):
+    """Loeb sisse failist cube formaadi numpy array-sse.
+
+    Args:
+        file_path String: .cube faili asukoht
+
+    Returns:
+        np.array: 3-D numpy array .cube skalaarväljaga
+    """
+    
+    with open(file_path,  'r') as file:
+        # Comments
+        file.readline()
+        file.readline()
+        
+        # Esimene rida
+        a = file.readline().split()
+        N_atoms = int(a[0])
+        
+        # 3 xyz
+        x = [float(x) for x in file.readline().split()]
+        y = [float(x) for x in file.readline().split()]
+        z = [float(x) for x in file.readline().split()]
+
+        #N aatomit
+        atoms = list()
+        for i in range(N_atoms):
+            atoms.append([float(x) for x in file.readline().split()])
+        
+        #Cube andmed
+        cube = np.zeros(int(x[0] * y[0] * z[0]))
+        i = 0
+        for line in file:
+            for num in line.strip().split():
+                cube[i] = float(num)
+                i += 1
+                
+    cube = np.reshape(cube, (int(x[0]), int(y[0]), int(z[0])))
+    
+    return cube
 
 
 # Testimine
