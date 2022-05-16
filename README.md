@@ -10,13 +10,20 @@ Vali vismol.py fail.
 
 (Võib olla töötab ka .zip faili installimine)
 
-## Paketi eemaldamine Windows arvutil
+## Paketi eemaldamine arvutil
 
-Minna kausta
+
+
+Windows arvutil minna kausta
 
 C:\Users\User_name\AppData\Roaming\Blender Foundation\Blender\3.1\scripts
 
 ja kustutada fail vismol.py.
+
+Teistel operatsiooni süsteemidel on võimalik leida paketti instaleerimise koht käsuga python terminalis:
+
+vismol.__file__
+
 
 ## Faili kasutamine:
 
@@ -33,3 +40,21 @@ Lisaks on võimalik kasutada argumente atom_radius ja bond_radius, mis on defaul
 Lisaks on võimalik kustutada molekuli käsuga
 
 'vismol.clear_collection()'
+
+
+## Pip installimine Blenderi Pythonis
+
+1) Viia fail get-pip.py Blenderi Pythoni bin folderisse.
+
+2) Käivitada Pythoniga antud fail. Selle tegeminie võib vajada õiguste lisamist.
+
+3) Pythoni terminalis Blenderi aknas saab paketti installida:
+
+import pip
+
+pip.main(['install', 'package'])
+
+Praegu see pip-i installib ära, aga pip ise paketti õigesti ei installi.
+
+
+scikit-image
