@@ -1,6 +1,7 @@
 import math
 import numpy as np
 import bpy
+#from skimage import measure
 
 #TODO: Värvid lõpetada
 atom_info = {'H' : [0.32, '#ffffff', 1], 'He' : [0.46, '#d9ffff', 4], 'Li': [1.33, '#cc80ff', 6.9], 'Be' : [1.02, '#c2ff00', 9], 
@@ -267,16 +268,12 @@ def read_cube(file_path):
     cube = np.reshape(cube, (int(x[0]), int(y[0]), int(z[0])))
     
     return cube
+"""
+def isosurface(scalar_field):
 
-    def isosurface(scalar_field):
-        """_summary_
-
-        Args:
-            scalar_field (_type_): _description_
-        """
-        verts, faces, normals, values = measure.marching_cubes(scalar_field, 0)
-        
-        pass
+    verts, faces, normals, values = measure.marching_cubes(scalar_field, 0)
+    
+    pass"""
 
 
 # Testimine
