@@ -48,13 +48,14 @@ Lisaks on võimalik kustutada molekuli käsuga
 
 2) Käivitada Pythoniga antud fail. Selle tegeminie võib vajada õiguste lisamist.
 
-3) Pythoni terminalis Blenderi aknas saab paketti installida:
+3) Installida scikit-image
+
+python -m pip install scikit-install
+
+4) Olemasolu saab kontrollida Blenderi sees käsuga
 
 import pip
 
-pip.main(['install', 'package'])
+pip.main(['list'])
 
-Praegu see pip-i installib ära, aga pip ise paketti õigesti ei installi.
-
-
-scikit-image
+scikit-image -> import skimage

@@ -268,6 +268,16 @@ def read_cube(file_path):
     
     return cube
 
+    def isosurface(scalar_field):
+        """_summary_
+
+        Args:
+            scalar_field (_type_): _description_
+        """
+        verts, faces, normals, values = measure.marching_cubes(scalar_field, 0)
+        
+        pass
+
 
 # Testimine
 #clear_collection()
