@@ -22,24 +22,29 @@ ja kustutada fail vismol.py.
 
 Teistel operatsiooni süsteemidel on võimalik leida paketti instaleerimise koht käsuga python terminalis:
 
+```
 vismol.__file__
-
+```
 
 ## Faili kasutamine:
+```
+import vismol
 
-'import vismol'
-
-'vismol.create_molecule(file_path)'
-
+vismol.create_molecule(file_path)
+```
 Näiteks:
 
-'vismol.create_molecule("C:\\Users\\Marko\\Desktop\\BlendProj\\blender-molecular-visualizations\\Molecules\\C6H6.xyz")'
+```
+vismol.create_molecule("C:\\Users\\Marko\\Desktop\\BlendProj\\blender-molecular-visualizations\\Molecules\\C6H6.xyz")
+```
 
 Lisaks on võimalik kasutada argumente atom_radius ja bond_radius, mis on default väärtustega 0.8 ja 0.1.
 
 Lisaks on võimalik kustutada molekuli käsuga
 
-'vismol.clear_collection()'
+```
+vismol.clear_collection()
+```
 
 
 ## Pip installimine Blenderi Pythonis
@@ -54,8 +59,10 @@ python -m pip install scikit-install
 
 4) Olemasolu saab kontrollida Blenderi sees käsuga
 
+```
 import pip
 
 pip.main(['list'])
+```
 
 scikit-image -> import skimage
