@@ -2,7 +2,7 @@ import math
 import numpy as np
 import bpy
 
-from skimage import measure
+#from skimage import measure
 
 import time
 from math import sqrt,sin,cos,tan
@@ -67,8 +67,8 @@ def read_atoms(file_path):
     
     atoms = list()
     for atom in raw_atoms:
-        name = ''.join([y for y in atom{0] if not atom{0].isdigit()])
-        atoms.append(name, float(atom[1]), float(atom[2]), float(atom[3]))
+        name = ''.join([y for y in atom[0] if not atom[0].isdigit()])
+        atoms.append([name, float(atom[1]), float(atom[2]), float(atom[3])])
     
     #atoms = [[''.join([y for y in x[0] if not y.isdigit()]), float(x[1]), float(x[2]), float(x[3])] for x in atoms]
     
@@ -769,7 +769,8 @@ isolevel=0.3         #threshold value used for the surface within the scalarfiel
 
 # Testimine
 #clear_collection()
-#create_molecule("C:\\Users\\Marko\\Desktop\\BlendProj\\blender-molecular-visualizations\\Molecules\\C6O6.xyz")
+#create_molecule("C:\\Users\\Marko\\Desktop\\BlendProj\\blender-molecular-visualizations\\Molecules\\co_co_4.xyz")
+
 #add_bond("C", "O.004")
 #
 #cube, x, y, z = read_cube('C:\\Users\\Marko\\Desktop\\BlendProj\\blender-molecular-visualizations\\H2O\\cube_001_eigenstate_00001_spin_1.cube')
@@ -782,13 +783,22 @@ isolevel=0.3         #threshold value used for the surface within the scalarfiel
 """
 verts, faces, normals, values = isosurface1(cube)
 new_verts = verts
-print(x)
 for i in range(len(new_verts)):
     new_verts[i][0] = new_verts[i][0] - 0.5*x[0]
     new_verts[i][1] = new_verts[i][1] - 0.5*y[0]
     new_verts[i][2] = new_verts[i][2] - 0.5*z[0]
     
 block=create_mesh_for("block",new_verts,faces)
+
+verts2, faces2, normals2, values2 = isosurface1(np.negative(cube))
+new_verts2 = verts2
+for i in range(len(new_verts2)):
+    new_verts2[i][0] = new_verts2[i][0] - 0.5*x[0]
+    new_verts2[i][1] = new_verts2[i][1] - 0.5*y[0]
+    new_verts2[i][2] = new_verts2[i][2] - 0.5*z[0]
+    
+block=create_mesh_for("block",new_verts,faces)
+#scene.objects.link(block)
 #scene.objects.link(block)
 #selectobj(block)
 #Select object from objects and add it to isosurfaces subdir
