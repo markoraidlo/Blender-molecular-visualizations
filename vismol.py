@@ -282,12 +282,19 @@ def read_cube(file_path):
     return cube, x, y, z
 
 def isosurface1(scalar_field):
+    #TODO: read_scalar()
+    
+    
+    #TODO: create mesh for scalar
     verts, faces, normals, values = measure.marching_cubes(scalar_field, 0.1)
     
     return verts, faces, normals, values
 
+def read_scalar():
+    pass
 
 
+"""
 
 edgetable=(0x0  , 0x109, 0x203, 0x30a, 0x406, 0x50f, 0x605, 0x70c,
             0x80c, 0x905, 0xa0f, 0xb06, 0xc0a, 0xd03, 0xe09, 0xf00,

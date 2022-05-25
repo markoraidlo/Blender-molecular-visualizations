@@ -47,22 +47,4 @@ vismol.clear_collection()
 ```
 
 
-## Pip installimine Blenderi Pythonis
-
-1) Viia fail get-pip.py Blenderi Pythoni bin folderisse.
-
-2) Käivitada Pythoniga antud fail. Selle tegeminie võib vajada õiguste lisamist.
-
-3) Installida scikit-image
-
-python -m pip install scikit-install
-
-4) Olemasolu saab kontrollida Blenderi sees käsuga
-
-```
-import pip
-
-pip.main(['list'])
-```
-
-scikit-image -> import skimage
+### Iga meetodi kohta eraldi rida ja seletus / Docs
